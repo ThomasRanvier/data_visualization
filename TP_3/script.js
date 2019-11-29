@@ -74,9 +74,15 @@ function display_map(date, first) {
                             .attr('style', 'left:' + (mousePosition[0] - 90) +
                                 'px; top:' + (mousePosition[1] + 45) + 'px')
                             .html(d.properties.nom + ', ' + regionValues[d.properties.nom] + ' malades');
+ 			   		    d3.select(this).style('fill', 'orange');
                     })
-                    .on('mouseout', function() {
+                    .on('mouseout', function(d) {
                         tooltip.classed('hidden', true);
+                        var value = regionValues[d.properties.nom];
+                        if (value) {
+                            d3.select(this).style('fill', color(value));
+                        } else
+                            d3.select(this).style('fill', '#ccc');
                     });
             } else {
                 g.selectAll('path')
