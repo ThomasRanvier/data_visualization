@@ -70,10 +70,11 @@ function display_map(date, first) {
                     })
                     .on('mousemove', function(d) {
                         var mousePosition = d3.mouse(this);
+                        var v = regionValues[d.properties.nom];
                         tooltip.classed('hidden', false)
                             .attr('style', 'left:' + (mousePosition[0] - 90) +
                                 'px; top:' + (mousePosition[1] + 45) + 'px')
-                            .html(d.properties.nom + ', ' + regionValues[d.properties.nom] + ' malades');
+                            .html(d.properties.nom + ', ' + (v ? v + ' malades' : 'pas de données'));
  			   		    d3.select(this).style('fill', 'orange');
                     })
                     .on('mouseout', function(d) {
