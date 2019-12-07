@@ -54,14 +54,25 @@ var matriceElt = d3.select("svg")
     .attr("transform", "translate(50,50)")
     .attr("id", "adjacencyMatrix");
 
-for (x in matrix) {
+for (i in matrix) {
+    var cur_x = matrix[i].x * 25
+    var cur_y = matrix[i].y * 25
+
     matriceElt.append('rect')
-        .attr('x', matrix[x].x * 25)
-        .attr('y', matrix[x].y * 25)
+        .attr('x', cur_x)
+        .attr('y', cur_y)
         .attr('width', 25)
         .attr('height', 25)
-        .attr('fill', color(matrix[x].sharedfollowers))
+        .attr('fill', color(matrix[i].sharedfollowers))
         .attr('stroke', '#FF9F9F')
+        .on("mouseover", function(){
+            moveCursors(matrix[i].x *25,  matrix[i].y * 25)
+            console.log(cur_x,cur_y)
+        })
+        console.log(cur_x,cur_y)
+        cur_x = 0
+        cur_y = 0
+        //Ok je comprends rien putain
 }
 
 var scaleSize = nodes.length * 25;
@@ -89,20 +100,22 @@ d3.select("#adjacencyMatrix")
     .call(d3.axisLeft(y));
 
 matriceElt.append('rect')
-    .attr('x', 0)
-    .attr('y', 0)
-    .attr('width', 25)
-    .attr('height', scaleSize)
-    .attr('fill', 'transparent')
-    .attr('stroke', '#000000');
+        .attr('id', "cursor_v")
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', 25)
+        .attr('height', scaleSize)
+        .attr('fill', 'transparent')
+        .attr('stroke', '#000000');
 
 matriceElt.append('rect')
-    .attr('x', 0)
-    .attr('y', 0)
-    .attr('width', scaleSize)
-    .attr('height', 25)
-    .attr('fill', 'transparent')
-    .attr('stroke', '#000000');
+        .attr('id', "cursor_h")
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', scaleSize)
+        .attr('height', 25)
+        .attr('fill', 'transparent')
+        .attr('stroke', '#000000');
 
 function createAdjacencyMatrix(nodes, edges) {
     var edgeHash = {};
@@ -121,4 +134,18 @@ function createAdjacencyMatrix(nodes, edges) {
         }
     }
     return matrix;
+}
+
+function moveCursors(mx,my){
+
+    d3.select("#cursor_h").transition()
+        .ease(d3.easeLinear)
+        .duration(1000)
+        .attr("y", my);
+
+    d3.select("#cursor_v").transition()
+    .ease(d3.easeLinear)
+        .duration(1000)
+        .attr("x", mx);
+
 }
