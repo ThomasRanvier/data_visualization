@@ -65,13 +65,13 @@ for (i in matrix) {
         .attr('height', 25)
         .attr('fill', color(matrix[i].sharedfollowers))
         .attr('stroke', '#FF9F9F')
-        .on("mouseover", function(){
-            moveCursors(matrix[i].x *25,  matrix[i].y * 25)
+        .on("click  ", function(){
+            moveCursors(cur_x,  cur_y)
             console.log(cur_x,cur_y)
         })
-        console.log(cur_x,cur_y)
-        cur_x = 0
-        cur_y = 0
+        // console.log(cur_x,cur_y)
+        // cur_x = 0
+        // cur_y = 0
         //Ok je comprends rien putain
 }
 
