@@ -53,7 +53,7 @@ var matriceElt = d3.select("svg")
     .append("g")
     .attr("transform", "translate(50,50)")
     .attr("id", "adjacencyMatrix")
-    .on("mouseover", function(){
+    .on("mousemove", function(){
         var mousePosition = d3.mouse(this);
         var m_x = Math.min(8, Math.max(0, Math.floor(mousePosition[0] / 25)));
         var m_y = Math.min(8, Math.max(0, Math.floor(mousePosition[1] / 25)));
@@ -142,9 +142,15 @@ cursor_h_y = 0
 cursor_v_x = 0
 
 function moveCursors(mx, my){
+    hy = document.getElementById('cursor_h').getBoundingClientRect()['y'] - 58;
+    vx = document.getElementById('cursor_v').getBoundingClientRect()['x'] - 58;
+
+    dist_hy = Math.abs(my - hy) / 200;
+    dist_vx = Math.abs(mx - vx) / 200;
+
     d3.select("#cursor_h").transition()
-        .ease(d3.easeSin)
-        .duration(2000 * Math.abs(( - my*25)/height))
+        .ease(d3.easeLinear)
+        .duration((1 - dist_hy) * 1000)
         .attr("y", my * 25)
         .attr('opacity', '100');
 
@@ -157,8 +163,8 @@ function moveCursors(mx, my){
     
 
     d3.select("#cursor_v").transition()
-        .ease(d3.easeSin)
-        .duration(200)
+        .ease(d3.easeLinear)
+        .duration((1 - dist_vx) * 1000)
         .attr("x", mx * 25)
         .attr('opacity', '100');
 }
