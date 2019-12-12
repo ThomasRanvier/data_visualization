@@ -1,0 +1,17 @@
+body {
+    font: 10px sans-serif;
+  }
+  
+.bar rect {
+fill: orange;
+}
+
+.bar text {
+fill: white;
+}
+
+.axis path, .axis line {
+fill: none;
+stroke: black;
+shape-rendering: crispEdges;
+}

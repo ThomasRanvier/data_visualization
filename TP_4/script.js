@@ -52,7 +52,13 @@ var matrix = createAdjacencyMatrix(nodes, edges);
 var matriceElt = d3.select("svg")
     .append("g")
     .attr("transform", "translate(50,50)")
-    .attr("id", "adjacencyMatrix");
+    .attr("id", "adjacencyMatrix")
+    .on("mouseover", function(){
+        var mousePosition = d3.mouse(this);
+        var m_x = Math.min(8, Math.max(0, Math.floor(mousePosition[0] / 25)));
+        var m_y = Math.min(8, Math.max(0, Math.floor(mousePosition[1] / 25)));
+        moveCursors(m_x, m_y);
+    });
 
 for (i in matrix) {
     var cur_x = matrix[i].x * 25
@@ -64,15 +70,7 @@ for (i in matrix) {
         .attr('width', 25)
         .attr('height', 25)
         .attr('fill', color(matrix[i].sharedfollowers))
-        .attr('stroke', '#FF9F9F')
-        .on("click  ", function(){
-            moveCursors(cur_x,  cur_y)
-            console.log(cur_x,cur_y)
-        })
-        // console.log(cur_x,cur_y)
-        // cur_x = 0
-        // cur_y = 0
-        //Ok je comprends rien putain
+        .attr('stroke', '#FF9F9F');
 }
 
 var scaleSize = nodes.length * 25;
@@ -100,22 +98,26 @@ d3.select("#adjacencyMatrix")
     .call(d3.axisLeft(y));
 
 matriceElt.append('rect')
-        .attr('id', "cursor_v")
-        .attr('x', 0)
-        .attr('y', 0)
-        .attr('width', 25)
-        .attr('height', scaleSize)
-        .attr('fill', 'transparent')
-        .attr('stroke', '#000000');
+    .attr('id', "cursor_v")
+    .attr('x', 0)
+    .attr('y', 0)
+    .attr('width', 25)
+    .attr('height', scaleSize)
+    .attr('fill', 'transparent')
+    .attr('stroke', '#000000')
+    .attr('opacity', '0')
+    .attr('pointer-events', 'none');
 
 matriceElt.append('rect')
-        .attr('id', "cursor_h")
-        .attr('x', 0)
-        .attr('y', 0)
-        .attr('width', scaleSize)
-        .attr('height', 25)
-        .attr('fill', 'transparent')
-        .attr('stroke', '#000000');
+    .attr('id', "cursor_h")
+    .attr('x', 0)
+    .attr('y', 0)
+    .attr('width', scaleSize)
+    .attr('height', 25)
+    .attr('fill', 'transparent')
+    .attr('stroke', '#000000')
+    .attr('opacity', '0')
+    .attr('pointer-events', 'none');
 
 function createAdjacencyMatrix(nodes, edges) {
     var edgeHash = {};
@@ -136,16 +138,27 @@ function createAdjacencyMatrix(nodes, edges) {
     return matrix;
 }
 
-function moveCursors(mx,my){
+cursor_h_y = 0
+cursor_v_x = 0
 
+function moveCursors(mx, my){
     d3.select("#cursor_h").transition()
-        .ease(d3.easeLinear)
-        .duration(1000)
-        .attr("y", my);
+        .ease(d3.easeSin)
+        .duration(2000 * Math.abs(( - my*25)/height))
+        .attr("y", my * 25)
+        .attr('opacity', '100');
+
+       
+    console.log(d3.select("#cursor_h").getAttribute('y'))
+    // console.log(((cursor_h_y - my*25)/height)**2)
+
+    // cursor_h_y = my * 25
+    // console.log((cursor_h_y))
+    
 
     d3.select("#cursor_v").transition()
-    .ease(d3.easeLinear)
-        .duration(1000)
-        .attr("x", mx);
-
+        .ease(d3.easeSin)
+        .duration(200)
+        .attr("x", mx * 25)
+        .attr('opacity', '100');
 }
