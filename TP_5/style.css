@@ -4,9 +4,33 @@ body {
   
 .bar rect {
 fill: orange;
+opacity: 0.75;
+}
+
+.bar-hover {
+fill: #fe8708;
+font-weight: bold;
 }
 
 .bar text {
+fill: black;
+font-weight: bold;
+}
+
+.bar-fr rect {
+fill: steelblue;
+opacity: 0.75;
+}
+
+.bar-hover-fr {
+fill: #1850b3;
+font-weight: bold;
+}
+
+.bar-fr:hover {
+fill: blue;
+}
+.bar-fr text {
 fill: black;
 font-weight: bold;
 }
